@@ -2,8 +2,9 @@ import { Composition } from 'remotion';
 import { TeaserVideo } from './TeaserVideo';
 
 const FPS = 30;
-const WIDTH = 1080;
-const HEIGHT = 1920;
+/** Horizontal (landscape) desktop size: 16:9 */
+const WIDTH = 1920;
+const HEIGHT = 1080;
 const DURATION_SEC = 8;
 
 export const RemotionRoot = () => {

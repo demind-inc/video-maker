@@ -1,11 +1,15 @@
-import express from 'express';
-import cors from 'cors';
+import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { analyzeRouter } from './routes/analyze.js';
-import { renderRouter } from './routes/render.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Load .env from server directory (works when running from root or server/)
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
+
+import express from 'express';
+import cors from 'cors';
+import { analyzeRouter } from './routes/analyze.js';
+import { renderRouter } from './routes/render.js';
 
 const app = express();
 app.use(cors());

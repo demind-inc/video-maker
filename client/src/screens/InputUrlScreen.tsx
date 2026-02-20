@@ -52,7 +52,7 @@ export function InputUrlScreen({ onSubmit, error }: Props) {
           <button
             type="submit"
             disabled={!url.trim()}
-            className="w-full h-14 rounded-2xl bg-brand-500 hover:bg-brand-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-lg transition shadow-lg shadow-brand-500/20 hover:shadow-brand-500/30"
+            className="w-full h-14 rounded-2xl bg-gradient-to-r from-brand-400 via-brand-500 to-brand-600 hover:from-brand-500 hover:via-brand-500 hover:to-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-lg transition shadow-lg shadow-brand-500/20 hover:shadow-brand-500/30"
           >
             Create teaser
           </button>
