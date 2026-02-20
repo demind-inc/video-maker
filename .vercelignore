@@ -1,0 +1,2 @@
+# Ignore local render output (large MP4s); serverless uses /tmp
+server/output/*.mp4

@@ -67,3 +67,23 @@ npm start
 ```
 
 Set `PORT` and `FIRECRAWL_API_KEY` in the environment when running in production.
+
+## Deploy to Vercel (client + server)
+
+Both the client (Vite SPA) and server (Express + Remotion) deploy as a single Vercel project: the client is served as static files and the server runs as serverless functions.
+
+1. **Install Vercel CLI** (optional): `npm i -g vercel`
+
+2. **From the repo root**, run:
+   ```bash
+   vercel
+   ```
+   Or connect the repo in the [Vercel Dashboard](https://vercel.com/new) and deploy.
+
+3. **Environment variables** (Project → Settings → Environment Variables):
+   - `FIRECRAWL_API_KEY` – required for `/api/analyze` (get one at [firecrawl.dev](https://firecrawl.dev)).
+
+4. **Notes**
+   - **Analyze** (`/api/analyze`) runs as a serverless function and works on Vercel.
+   - **Render** (`/api/render`) uses Remotion and Chromium. On Vercel it may hit time/memory limits (max 60s on Pro, 10s on Hobby) and Chromium may not be available in the default runtime. For reliable video rendering at scale, consider running the server on [Railway](https://railway.app), [Render](https://render.com), or [Fly.io](https://fly.io) and pointing the client at that API URL.
+   - Rendered videos on Vercel are written to `/tmp/output` and served for the duration of the function; for persistent storage you’d need to upload to S3/R2 or Vercel Blob.
