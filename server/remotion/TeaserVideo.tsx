@@ -141,7 +141,7 @@ export const TeaserVideo: React.FC<Props> = ({ title, description, image }) => {
           {/* Title: streaming text + slide-in from left + fade-in */}
           <h1
             style={{
-              fontFamily: 'system-ui, sans-serif',
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
               fontSize: 56,
               fontWeight: 700,
               color: '#f8fafc',
@@ -165,7 +165,7 @@ export const TeaserVideo: React.FC<Props> = ({ title, description, image }) => {
           {/* Description: streaming text + slide-in from below + fade-in */}
           <p
             style={{
-              fontFamily: 'system-ui, sans-serif',
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
               fontSize: 28,
               color: 'rgba(203, 213, 225, 0.95)',
               textAlign: 'center',
