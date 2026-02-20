@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
 
   const firecrawl = new Firecrawl({ apiKey: apiKey.trim() });
 
-  const scrapeOptions = { formats: ['markdown'] as const };
+  const scrapeOptions = { formats: ['markdown'] as ('markdown' | 'html')[] };
   type ScrapeResult = {
     success?: boolean;
     error?: string;

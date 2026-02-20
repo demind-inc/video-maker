@@ -10,7 +10,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Server package root (render.ts is in src/routes/)
 const serverDir = path.join(__dirname, '..', '..');
 const remotionEntry = path.join(serverDir, 'remotion', 'index.tsx');
-const outputDir = path.join(serverDir, 'output');
+// Vercel: only /tmp is writable; local: server/output
+const outputDir =
+  process.env.VERCEL === '1'
+    ? path.join('/tmp', 'output')
+    : path.join(serverDir, 'output');
 
 let cachedServeUrl: string | null = null;
 
