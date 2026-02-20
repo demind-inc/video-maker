@@ -24,9 +24,16 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const scrapeResult = await firecrawl.scrape(normalizedUrl, {
+    const scrapeResult = await firecrawl.scrapeUrl(normalizedUrl, {
       formats: ['markdown'],
-    });
+    }) as {
+      success?: boolean;
+      error?: string;
+      markdown?: string;
+      metadata?: { title?: string; description?: string; ogImage?: string };
+      title?: string;
+      description?: string;
+    };
 
     if (!scrapeResult || !scrapeResult.success) {
       res.status(502).json({
@@ -35,16 +42,10 @@ router.post('/', async (req, res) => {
       return;
     }
 
-    const data = scrapeResult.data as {
-      markdown?: string;
-      metadata?: { title?: string; description?: string; ogImage?: string };
-      title?: string;
-      description?: string;
-    };
-    const title = data.metadata?.title ?? data.title ?? '';
-    const description = data.metadata?.description ?? data.description ?? '';
-    const markdown = data.markdown ?? '';
-    const image = data.metadata?.ogImage;
+    const title = scrapeResult.metadata?.title ?? scrapeResult.title ?? '';
+    const description = scrapeResult.metadata?.description ?? scrapeResult.description ?? '';
+    const markdown = scrapeResult.markdown ?? '';
+    const image = scrapeResult.metadata?.ogImage;
 
     res.json({
       url: normalizedUrl,
