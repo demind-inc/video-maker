@@ -7,9 +7,10 @@ import { renderMedia, selectComposition } from '@remotion/renderer';
 import { v4 as uuidv4 } from 'uuid';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const serverDir = path.join(__dirname, '..');
+// Server package root (render.ts is in src/routes/)
+const serverDir = path.join(__dirname, '..', '..');
 const remotionEntry = path.join(serverDir, 'remotion', 'index.tsx');
-const outputDir = path.join(serverDir, '..', 'output');
+const outputDir = path.join(serverDir, 'output');
 
 let cachedServeUrl: string | null = null;
 

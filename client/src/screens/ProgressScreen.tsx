@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { PageData } from '../App';
 
 type Props = {
@@ -13,6 +13,12 @@ type ProgressPhase = 'analyzing' | 'creating';
 export function ProgressScreen({ url, onAnalyzeDone, onRenderDone, onError }: Props) {
   const [phase, setPhase] = useState<ProgressPhase>('analyzing');
   const [status, setStatus] = useState<string>('Connecting…');
+  const onAnalyzeDoneRef = useRef(onAnalyzeDone);
+  const onRenderDoneRef = useRef(onRenderDone);
+  const onErrorRef = useRef(onError);
+  onAnalyzeDoneRef.current = onAnalyzeDone;
+  onRenderDoneRef.current = onRenderDone;
+  onErrorRef.current = onError;
 
   useEffect(() => {
     let cancelled = false;
@@ -28,11 +34,11 @@ export function ProgressScreen({ url, onAnalyzeDone, onRenderDone, onError }: Pr
         if (cancelled) return;
         if (!analyzeRes.ok) {
           const err = await analyzeRes.json().catch(() => ({}));
-          onError(err.message || analyzeRes.statusText || 'Analysis failed');
+          onErrorRef.current(err.message || analyzeRes.statusText || 'Analysis failed');
           return;
         }
         const pageData: PageData = await analyzeRes.json();
-        onAnalyzeDone(pageData);
+        onAnalyzeDoneRef.current(pageData);
 
         setPhase('creating');
         setStatus('Creating video…');
@@ -48,13 +54,13 @@ export function ProgressScreen({ url, onAnalyzeDone, onRenderDone, onError }: Pr
         if (cancelled) return;
         if (!renderRes.ok) {
           const err = await renderRes.json().catch(() => ({}));
-          onError(err.message || renderRes.statusText || 'Render failed');
+          onErrorRef.current(err.message || renderRes.statusText || 'Render failed');
           return;
         }
         const { videoUrl } = await renderRes.json();
-        onRenderDone(videoUrl);
+        onRenderDoneRef.current(videoUrl);
       } catch (e) {
-        if (!cancelled) onError(e instanceof Error ? e.message : 'Something went wrong');
+        if (!cancelled) onErrorRef.current(e instanceof Error ? e.message : 'Something went wrong');
       }
     }
 
@@ -62,7 +68,7 @@ export function ProgressScreen({ url, onAnalyzeDone, onRenderDone, onError }: Pr
     return () => {
       cancelled = true;
     };
-  }, [url, onAnalyzeDone, onRenderDone, onError]);
+  }, [url]);
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-4 py-12">
